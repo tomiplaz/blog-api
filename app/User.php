@@ -29,4 +29,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password'
     ];
+
+    /**
+     * Get user's posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Post', 'user_id');
+    }
+
+    /**
+     * Get user's comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'user_id');
+    }
 }
