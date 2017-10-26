@@ -23,10 +23,8 @@ class UsersTableSeeder extends Seeder
             ]
         ];
 
-        $users = collect($users)->map(function ($item) {
-            return [];
-        })->toArray();
-
-        $userModel->createMany($users);
+        foreach ($users as $user) {
+            $userModel->create($user);
+        }
     }
 }

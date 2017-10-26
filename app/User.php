@@ -31,6 +31,41 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot() {
+        parent::boot();
+        static::creating(function ($user) {
+            $user->string_id = $user->getUniqueStringId();
+            $user->password = hash('md5', $user->email);
+        });
+    }
+
+    /**
+     * Get unique string ID.
+     * 
+     * @return string
+     */
+    private function getUniqueStringId()
+    {
+        do {
+            $s = '';
+            for ($i = 0; $i < 6; $i++) {
+                $s .= mt_rand(0, 9);
+            }
+            $isUnique = !$this->where('string_id', $s)->first();
+        } while (!$isUnique);
+
+        return $s;
+    }
+
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = password_hash($value, PASSWORD_DEFAULT);
+    }
+
+    /**
      * Get user's posts.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

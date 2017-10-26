@@ -33,6 +33,8 @@ class TagsTableSeeder extends Seeder
             ]
         ];
 
-        $tagModel->createMany($tags);
+        foreach ($tags as $tag) {
+            $tagModel->create($tag);
+        }
     }
 }
