@@ -17,6 +17,11 @@ class UserController extends BaseController
         $this->userModel = $userModel;
     }
 
+    /**
+     * Get all users.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function all() {
         return $this->userModel->all();
     }

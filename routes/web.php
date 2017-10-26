@@ -11,10 +11,10 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->version();
-});
-
-$app->group(['prefix' => 'users'], function () use ($app) {
-    $app->get('', 'UserController@all');
+$app->group(['prefix' => 'api'], function () use ($app) {
+    $app->group(['prefix' => 'v1'], function () use ($app) {
+        $app->group(['prefix' => 'users'], function () use ($app) {
+            $app->get('', 'UserController@all');
+        });
+    });
 });
