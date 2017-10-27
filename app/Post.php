@@ -16,6 +16,36 @@ class Post extends Model
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot() {
+        parent::boot();
+        static::creating(function ($post) {
+            $post->string_id = $post->getUniqueStringId();
+        });
+    }
+
+    /**
+     * Get unique string ID.
+     * 
+     * @return string
+     */
+    private function getUniqueStringId()
+    {
+        do {
+            $s = '';
+            for ($i = 0; $i < 6; $i++) {
+                $s .= mt_rand(0, 9);
+            }
+            $isUnique = !$this->where('string_id', $s)->first();
+        } while (!$isUnique);
+
+        return $s;
+    }
+
+    /**
      * Get post's author.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
