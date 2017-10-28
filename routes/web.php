@@ -14,12 +14,16 @@
 $app->group(['prefix' => 'api'], function () use ($app) {
     $app->group(['prefix' => 'v1'], function () use ($app) {
         $app->group(['prefix' => 'users'], function () use ($app) {
-            $app->get('', 'UserController@all');
+            $ctrl = 'UserController';
+            $app->get('', $ctrl . '@all');
+            $app->get('{id}', $ctrl . '@one');
+            $app->post('', $ctrl . '@create');
         });
         $app->group(['prefix' => 'posts'], function () use ($app) {
-            $app->get('', 'PostController@all');
-            $app->get('{id}', 'PostController@one');
-            $app->post('', 'PostController@create');
+            $ctrl = 'PostController';
+            $app->get('', $ctrl . '@all');
+            $app->get('{id}', $ctrl . '@one');
+            $app->post('', $ctrl . '@create');
         });
     });
 });

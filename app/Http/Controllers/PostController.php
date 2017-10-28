@@ -33,18 +33,18 @@ class PostController extends BaseController
     }
 
     /**
-     * Get one post.
+     * Get a single post.
      * 
      * @param \Illuminate\Http\Request
      * 
      * @return \App\Post
      */
-    public function one(Request $request) {
-        return $this->postModel->find($request->route('id'));
+    public function one(int $id, Request $request) {
+        return $this->postModel->find($id);
     }
 
     /**
-     * Create post.
+     * Create a post.
      * 
      * @param \Illuminate\Http\Request
      * 
@@ -52,7 +52,7 @@ class PostController extends BaseController
      */
     public function create(Request $request) {
         try {
-            $user = $this->userModel->find(1);
+            $user = $this->userModel->find($request->get('user_id'));
             return $user->posts()->create($request->only(['title', 'content']));
         } catch (\Exception $e) {
             return $e->getMessage();
