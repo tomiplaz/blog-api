@@ -51,9 +51,11 @@ class UserController extends BaseController
      */
     public function create(Request $request) {
         try {
-            return $this->userModel->create($request->all());
+            $user = $this->userModel->create($request->only(['name', 'email', 'password']));
+            return response()->json($user);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 400);
         }
     }
 }

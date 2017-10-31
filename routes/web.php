@@ -13,12 +13,15 @@
 
 $app->group(['prefix' => 'api'], function () use ($app) {
     $app->group(['prefix' => 'v1'], function () use ($app) {
+        $app->post('login', 'AuthController@login');
+
         $app->group(['prefix' => 'users'], function () use ($app) {
             $ctrl = 'UserController';
             $app->get('', $ctrl . '@all');
             $app->get('{id}', $ctrl . '@one');
             $app->post('', $ctrl . '@create');
         });
+
         $app->group(['prefix' => 'posts'], function () use ($app) {
             $ctrl = 'PostController';
             $app->get('', $ctrl . '@all');
@@ -28,6 +31,6 @@ $app->group(['prefix' => 'api'], function () use ($app) {
     });
 });
 
-$app->options('{all:.*}', ['middleware' => 'cors', function() {
+$app->options('{all:.*}', function() {
     return response('');
-}]);
+});
