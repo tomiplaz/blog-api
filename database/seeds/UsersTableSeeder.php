@@ -15,11 +15,13 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 'name' => 'foo',
-                'email' => 'foo12345@foo.com'
+                'email' => 'foo@foo.com',
+                'password' => 'foo1'
             ],
             [
                 'name' => 'bar',
-                'email' => 'bar12345@foo.com'
+                'email' => 'bar@bar.com',
+                'password' => 'bar1'
             ]
         ];
 
