@@ -30,7 +30,3 @@ $app->group(['prefix' => 'api'], function () use ($app) {
         });
     });
 });
-
-$app->options('{all:.*}', function() {
-    return response('');
-});

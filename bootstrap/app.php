@@ -27,6 +27,8 @@ $app = new Laravel\Lumen\Application(
 
 $app->withEloquent();
 
+$app->configure('cors');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -60,7 +62,7 @@ $app->singleton(
 */
 
 $app->middleware([
-    App\Http\Middleware\Cors::class
+    \Barryvdh\Cors\HandleCors::class,
 ]);
 
 $app->routeMiddleware([
@@ -83,6 +85,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Appzcoder\LumenRoutesList\RoutesCommandServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Barryvdh\Cors\ServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

@@ -24,7 +24,7 @@ class AuthController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request) {
-        if ($token = app('auth')->attempt($request->only(['email', 'password']))) {
+        if ($token = app('auth')->attempt($request->only(['name', 'password']))) {
             return response()->json(compact('token'));
         } else {
             $message = 'Invalid credentials';
