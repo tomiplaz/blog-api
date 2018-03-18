@@ -13,7 +13,7 @@
 
 $app->group(['prefix' => 'api'], function () use ($app) {
     $app->group(['prefix' => 'v1'], function () use ($app) {
-        $app->post('login', 'AuthController@login');
+        $app->post('login', 'LoginController@login');
 
         $app->group(['prefix' => 'users'], function () use ($app) {
             $ctrl = 'UserController';
