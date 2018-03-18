@@ -51,11 +51,20 @@ class UserController extends BaseController
      */
     public function create(Request $request) {
         try {
+            $this->validate($request, [
+                'name' => 'required|string|min:2|max:20',
+                'email' => 'required|email|max:100|unique:users',
+                'password' => 'required|string|min:8|max:255'
+            ]);
+
             $user = $this->userModel->create($request->only(['name', 'email', 'password']));
+
             return response()->json($user);
+        } catch(\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
         } catch (\Exception $e) {
             $error = $e->getMessage();
-            return response()->json(compact('error'), 400);
+            return response()->json(compact('error'), 500);
         }
     }
 }
