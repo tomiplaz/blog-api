@@ -39,8 +39,8 @@ class PostController extends BaseController
      * 
      * @return \App\Post
      */
-    public function one(int $id, Request $request) {
-        return $this->postModel->find($id);
+    public function one(string $stringId, Request $request) {
+        return $this->postModel->where(['string_id' => $stringId])->first();
     }
 
     /**

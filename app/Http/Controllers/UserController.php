@@ -34,12 +34,8 @@ class UserController extends BaseController
      * 
      * @return \App\User
      */
-    public function one(int $id, Request $request) {
-        try {
-            return $this->userModel->find($id);
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+    public function one(string $stringId, Request $request) {
+        return $this->userModel->where(['string_id' => $stringId])->first();
     }
 
     /**
