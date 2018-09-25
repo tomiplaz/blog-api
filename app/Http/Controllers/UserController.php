@@ -24,7 +24,9 @@ class UserController extends BaseController
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all() {
-        return $this->userModel->all();
+        return $this->userModel
+            ->withCount(['posts', 'comments'])
+            ->get();
     }
 
     /**
@@ -35,7 +37,10 @@ class UserController extends BaseController
      * @return \App\User
      */
     public function one(string $stringId, Request $request) {
-        return $this->userModel->where(['string_id' => $stringId])->first();
+        return $this->userModel
+            ->withCount(['posts', 'comments'])
+            ->where(['string_id' => $stringId])
+            ->first();
     }
 
     /**
