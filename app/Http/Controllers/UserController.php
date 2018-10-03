@@ -20,7 +20,7 @@ class UserController extends BaseController
 
     /**
      * Get all users.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all() {
@@ -31,9 +31,9 @@ class UserController extends BaseController
 
     /**
      * Get a single user.
-     * 
+     *
      * @param \Illuminate\Http\Request
-     * 
+     *
      * @return \App\User
      */
     public function one(string $stringId, Request $request) {
@@ -45,9 +45,9 @@ class UserController extends BaseController
 
     /**
      * Create a user.
-     * 
+     *
      * @param \Illuminate\Http\Request
-     * 
+     *
      * @return \App\User
      */
     public function create(Request $request) {

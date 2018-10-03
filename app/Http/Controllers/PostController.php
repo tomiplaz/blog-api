@@ -29,7 +29,7 @@ class PostController extends BaseController
 
     /**
      * Get all posts.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all() {
@@ -38,9 +38,9 @@ class PostController extends BaseController
 
     /**
      * Get a single post.
-     * 
+     *
      * @param \Illuminate\Http\Request
-     * 
+     *
      * @return \App\Post
      */
     public function one(string $stringId, Request $request) {
@@ -49,9 +49,9 @@ class PostController extends BaseController
 
     /**
      * Create a post.
-     * 
+     *
      * @param \Illuminate\Http\Request
-     * 
+     *
      * @return \App\Post
      */
     public function create(Request $request) {
