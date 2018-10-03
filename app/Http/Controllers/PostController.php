@@ -6,6 +6,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Post as PostModel;
 use App\User as UserModel;
+use App\Tag as TagModel;
 
 class PostController extends BaseController
 {
@@ -16,11 +17,14 @@ class PostController extends BaseController
      */
     public function __construct(
         PostModel $postModel,
-        UserModel $userModel
+        UserModel $userModel,
+        TagModel $tagModel
     )
     {
         $this->postModel = $postModel;
         $this->userModel = $userModel;
+        $this->tagModel = $tagModel;
+        $this->db = app('db');
     }
 
     /**
@@ -29,7 +33,7 @@ class PostController extends BaseController
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all() {
-        return $this->postModel->all();
+        return $this->postModel->with(['tags'])->get();
     }
 
     /**
@@ -40,7 +44,7 @@ class PostController extends BaseController
      * @return \App\Post
      */
     public function one(string $stringId, Request $request) {
-        return $this->postModel->where(['string_id' => $stringId])->first();
+        return $this->postModel->with(['tags'])->where(['string_id' => $stringId])->first();
     }
 
     /**
@@ -51,10 +55,23 @@ class PostController extends BaseController
      * @return \App\Post
      */
     public function create(Request $request) {
+        $this->db->beginTransaction();
+
         try {
             $user = $this->userModel->find($request->get('user_id'));
-            return $user->posts()->create($request->only(['title', 'content']));
+            $post = $user->posts()->create($request->only(['title', 'content']));
+
+            $tagsIds = [];
+            foreach ($request->get('tags') as $tagKey) {
+                $tag = $this->tagModel->firstOrCreate(['key' => $tagKey]);
+                $tagsIds[] = $tag->id;
+            }
+            $post->tags()->attach($tagsIds);
+
+            $this->db->commit();
+            return $post;
         } catch (\Exception $e) {
+            $this->db->rollback();
             return $e->getMessage();
         }
     }
