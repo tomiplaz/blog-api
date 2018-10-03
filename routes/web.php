@@ -27,6 +27,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
             $app->get('', $ctrl . '@all');
             $app->get('{stringId}', $ctrl . '@one');
             $app->post('', $ctrl . '@create');
+            $app->post('{id}/comments', $ctrl . '@createPostComment');
         });
     });
 });

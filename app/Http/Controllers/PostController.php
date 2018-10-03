@@ -75,4 +75,20 @@ class PostController extends BaseController
             return $e->getMessage();
         }
     }
+
+    /**
+     * Create a post's comment.
+     *
+     * @param \Illuminate\Http\Request
+     *
+     * @return \App\Comment
+     */
+    public function createPostComment(string $id, Request $request) {
+        try {
+            $post = $this->postModel->find($id);
+            return $post->comments()->create($request->only(['user_id', 'text']));
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }
