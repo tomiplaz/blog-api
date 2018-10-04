@@ -56,6 +56,16 @@ class Post extends Model
     }
 
     /**
+     * Get post's comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'post_id');
+    }
+
+    /**
      * Get post's tags.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

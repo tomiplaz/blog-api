@@ -12,11 +12,21 @@ class Comment extends Model
      * @var array
      */
     protected $fillable = [
-        'text'
+        'user_id', 'text'
     ];
 
     /**
-     * Get comments's author.
+     * Get comment's post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function post()
+    {
+        return $this->belongsTo('App\Post', 'post_id');
+    }
+
+    /**
+     * Get comment's author.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
