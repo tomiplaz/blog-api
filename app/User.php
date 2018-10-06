@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Traits\ManagableByStringId;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable;
+    use Authenticatable, Authorizable, ManagableByStringId;
 
     /**
      * The attributes that are mass assignable.
@@ -61,24 +62,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    /**
-     * Get unique string ID.
-     * 
-     * @return string
-     */
-    private function getUniqueStringId()
-    {
-        do {
-            $s = '';
-            for ($i = 0; $i < 6; $i++) {
-                $s .= mt_rand(0, 9);
-            }
-            $isUnique = !$this->where('string_id', $s)->first();
-        } while (!$isUnique);
-
-        return $s;
     }
 
     public function setPasswordAttribute($value) {

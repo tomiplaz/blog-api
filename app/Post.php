@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ManagableByStringId;
 
 class Post extends Model
 {
+    use ManagableByStringId;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,24 +28,6 @@ class Post extends Model
         static::creating(function ($post) {
             $post->string_id = $post->getUniqueStringId();
         });
-    }
-
-    /**
-     * Get unique string ID.
-     * 
-     * @return string
-     */
-    private function getUniqueStringId()
-    {
-        do {
-            $s = '';
-            for ($i = 0; $i < 6; $i++) {
-                $s .= mt_rand(0, 9);
-            }
-            $isUnique = !$this->where('string_id', $s)->first();
-        } while (!$isUnique);
-
-        return $s;
     }
 
     /**
