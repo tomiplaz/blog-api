@@ -33,7 +33,9 @@ class PostController extends BaseController
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all() {
-        return $this->postModel->with(['tags'])->get();
+        return $this->postModel
+            ->with(['comments', 'tags'])
+            ->get();
     }
 
     /**
@@ -44,7 +46,10 @@ class PostController extends BaseController
      * @return \App\Post
      */
     public function one(string $stringId, Request $request) {
-        return $this->postModel->with(['tags'])->where(['string_id' => $stringId])->first();
+        return $this->postModel
+            ->with(['comments', 'tags'])
+            ->where(['string_id' => $stringId])
+            ->first();
     }
 
     /**
