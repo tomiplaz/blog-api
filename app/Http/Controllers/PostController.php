@@ -34,7 +34,7 @@ class PostController extends BaseController
      */
     public function all() {
         return $this->postModel
-            ->with(['comments', 'tags'])
+            ->with(['user', 'comments', 'tags'])
             ->get();
     }
 
@@ -47,7 +47,7 @@ class PostController extends BaseController
      */
     public function one(string $stringId, Request $request) {
         return $this->postModel
-            ->with(['comments', 'tags'])
+            ->with(['user', 'comments', 'tags'])
             ->where(['string_id' => $stringId])
             ->first();
     }
