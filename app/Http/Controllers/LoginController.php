@@ -16,10 +16,11 @@ class LoginController extends BaseController
     public function __construct(UserModel $userModel)
     {
         $this->userModel = $userModel;
+        $this->auth = app('auth');
     }
 
     /**
-     * Attempt to authenticate user and return JWT.
+     * Attempt to authenticate user and return JWT and user instance on success.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -30,8 +31,9 @@ class LoginController extends BaseController
                 'password' => 'required|string'
             ]);
 
-            if ($token = app('auth')->attempt($request->only(['name', 'password']))) {
-                return response()->json(compact('token'));
+            if ($token = $this->auth->attempt($request->only(['name', 'password']))) {
+                $user = $this->auth->user();
+                return response()->json(compact('token', 'user'));
             } else {
                 $message = 'Invalid credentials.';
                 return response()->json(compact('message'), 400);
