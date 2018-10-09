@@ -25,3 +25,11 @@ $factory->define(App\Post::class, function (Faker\Generator $faker) {
         'content' => $faker->text,
     ];
 });
+
+$factory->define(App\Comment::class, function (Faker\Generator $faker) {
+    return [
+        'post_id' => $faker->numberBetween(1, 7),
+        'user_id' => $faker->optional()->numberBetween(1, 2),
+        'text' => $faker->text,
+    ];
+});
