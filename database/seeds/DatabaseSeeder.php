@@ -11,9 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call('UsersTableSeeder');
-        $this->call('PostsTableSeeder');
-        $this->call('CommentsTableSeeder');
-        $this->call('TagsTableSeeder');
+        factory(App\User::class, 5)->create()->each(function($user) {
+            $posts = factory(App\Post::class, array_random(range(1, 5)))->make();
+            $user->posts()->saveMany($posts)->each(function($post) {
+                $comments = factory(App\Comment::class, array_random(range(1, 5)))->make();
+                $post->comments()->saveMany($comments);
+            });
+        });
     }
 }

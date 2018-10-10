@@ -13,23 +13,23 @@
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
+        'name' => $faker->unique()->word,
+        'email' => $faker->unique()->email,
+        'password' => 'password',
     ];
 });
 
 $factory->define(App\Post::class, function (Faker\Generator $faker) {
     return [
-        'user_id' => $faker->numberBetween(1, 2),
         'title' => $faker->sentence,
         'content' => $faker->text,
     ];
 });
 
 $factory->define(App\Comment::class, function (Faker\Generator $faker) {
+    $usersCount = App\User::count();
     return [
-        'post_id' => $faker->numberBetween(1, 7),
-        'user_id' => $faker->optional()->numberBetween(1, 2),
+        'user_id' => $faker->optional()->numberBetween(1, $usersCount),
         'text' => $faker->text,
     ];
 });
