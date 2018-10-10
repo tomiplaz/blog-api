@@ -47,7 +47,7 @@ class PostController extends BaseController
      */
     public function one(string $stringId, Request $request) {
         return $this->postModel
-            ->with(['user', 'comments', 'tags'])
+            ->with(['user', 'comments.user', 'tags'])
             ->where(['string_id' => $stringId])
             ->first();
     }
