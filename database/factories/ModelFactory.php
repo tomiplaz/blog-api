@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function(Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
         'email' => $faker->unique()->email,
@@ -19,17 +19,22 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Post::class, function (Faker\Generator $faker) {
+$factory->define(App\Post::class, function(Faker\Generator $faker) {
     return [
         'title' => $faker->sentence,
         'content' => $faker->text,
     ];
 });
 
-$factory->define(App\Comment::class, function (Faker\Generator $faker) {
-    $usersCount = App\User::count();
+$factory->define(App\Comment::class, function(Faker\Generator $faker) {
     return [
-        'user_id' => $faker->optional()->numberBetween(1, $usersCount),
+        'user_id' => $faker->optional()->numberBetween(1, DatabaseSeeder::USERS_COUNT),
         'text' => $faker->text,
+    ];
+});
+
+$factory->define(App\Tag::class, function(Faker\Generator $faker) {
+    return [
+        'key' => $faker->unique()->word,
     ];
 });
