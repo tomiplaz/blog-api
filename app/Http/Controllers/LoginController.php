@@ -20,9 +20,11 @@ class LoginController extends BaseController
     }
 
     /**
-     * Attempt to authenticate user and return JWT and user instance on success.
+     * Attempt to authenticate user.
+     * 
+     * @param \Illuminate\Http\Request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse JWT and user instance (on success) or error response.
      */
     public function login(Request $request) {
         try {

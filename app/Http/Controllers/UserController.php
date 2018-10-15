@@ -21,7 +21,7 @@ class UserController extends BaseController
     /**
      * Get all users.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection All users.
      */
     public function all() {
         return $this->userModel
@@ -32,11 +32,11 @@ class UserController extends BaseController
     /**
      * Get a single user.
      *
-     * @param \Illuminate\Http\Request
+     * @param string $stringId User's string Id.
      *
-     * @return \App\User
+     * @return \App\User|null Requested user (if any) or null.
      */
-    public function one(string $stringId, Request $request) {
+    public function one(string $stringId) {
         return $this->userModel
             ->withCount(['posts', 'comments'])
             ->where(['string_id' => $stringId])
@@ -48,7 +48,7 @@ class UserController extends BaseController
      *
      * @param \Illuminate\Http\Request
      *
-     * @return \App\User
+     * @return \App\User|\Illuminate\Http\JsonResponse Created user or error response.
      */
     public function create(Request $request) {
         try {
@@ -57,10 +57,7 @@ class UserController extends BaseController
                 'email' => 'required|email|max:100|unique:users',
                 'password' => 'required|string|min:8|max:255'
             ]);
-
-            $user = $this->userModel->create($request->only(['name', 'email', 'password']));
-
-            return response()->json($user);
+            return $this->userModel->create($request->only(['name', 'email', 'password']));
         } catch(\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {

@@ -30,7 +30,7 @@ class PostController extends BaseController
     /**
      * Get all posts.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection All posts.
      */
     public function all() {
         return $this->postModel
@@ -41,11 +41,11 @@ class PostController extends BaseController
     /**
      * Get a single post.
      *
-     * @param \Illuminate\Http\Request
+     * @param string $stringId Post's string ID.
      *
-     * @return \App\Post
+     * @return \App\Post|null Requested post (if any) or null.
      */
-    public function one(string $stringId, Request $request) {
+    public function one(string $stringId) {
         return $this->postModel
             ->with(['user', 'comments.user', 'tags'])
             ->where(['string_id' => $stringId])
@@ -57,7 +57,7 @@ class PostController extends BaseController
      *
      * @param \Illuminate\Http\Request
      *
-     * @return \App\Post
+     * @return \App\Post|\Illuminate\Http\JsonResponse Created post or error response.
      */
     public function create(Request $request) {
         $this->db->beginTransaction();
@@ -77,23 +77,26 @@ class PostController extends BaseController
             return $post;
         } catch (\Exception $e) {
             $this->db->rollback();
-            return $e->getMessage();
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
         }
     }
 
     /**
      * Create a post's comment.
      *
+     * @param string $id Post's ID.
      * @param \Illuminate\Http\Request
      *
-     * @return \App\Comment
+     * @return \App\Comment|\Illuminate\Http\JsonResponse Created comment or error response.
      */
     public function createPostComment(string $id, Request $request) {
         try {
             $post = $this->postModel->find($id);
             return $post->comments()->create($request->only(['user_id', 'text']));
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
         }
     }
 }
