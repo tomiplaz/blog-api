@@ -28,14 +28,22 @@ class PostController extends BaseController
     }
 
     /**
-     * Get all posts.
+     * Get all posts (filtered by tag if tag query param is present).
+     *
+     * @param \Illuminate\Http\Request
      *
      * @return \Illuminate\Database\Eloquent\Collection All posts.
      */
-    public function all() {
-        return $this->postModel
-            ->with(['user', 'comments', 'tags'])
-            ->get();
+    public function all(Request $request) {
+        $query = $this->postModel;
+
+        if ($request->has('tag')) {
+            $query = $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('key', $request->query('tag'));
+            });
+        }
+
+        return $query->with(['user', 'comments', 'tags'])->get();
     }
 
     /**

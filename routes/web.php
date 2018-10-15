@@ -29,10 +29,5 @@ $app->group(['prefix' => 'api'], function () use ($app) {
             $app->post('', $ctrl . '@create');
             $app->post('{id}/comments', $ctrl . '@createPostComment');
         });
-
-        $app->group(['prefix' => 'tags'], function () use ($app) {
-            $ctrl = 'TagController';
-            $app->get('{key}/posts', $ctrl . '@tagPosts');
-        });
     });
 });
