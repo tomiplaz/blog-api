@@ -115,4 +115,22 @@ class PostController extends BaseController
             return response()->json(compact('error'), 500);
         }
     }
+
+    /**
+     * Increment post's views count.
+     *
+     * @param string $id Post's ID.
+     *
+     * @return void|\Illuminate\Http\JsonResponse Empty response (on success) or error response.
+     */
+    public function incrementPostViewsCount(string $id) {
+        try {
+            $post = $this->postModel->find($id);
+            $post->views_count++;
+            $post->save();
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
+    }
 }

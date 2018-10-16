@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title', 255);
             $table->text('content');
+            $table->unsignedBigInteger('views_count')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id', 'fk_posts_user_id')

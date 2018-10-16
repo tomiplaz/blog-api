@@ -28,6 +28,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
             $app->get('{stringId}', $ctrl . '@one');
             $app->post('', $ctrl . '@create');
             $app->post('{id}/comments', $ctrl . '@createPostComment');
+            $app->post('{id}/increment_views', $ctrl . '@incrementPostViewsCount');
         });
     });
 });
