@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Post as PostModel;
 use App\User as UserModel;
 use App\Tag as TagModel;
+use App\Comment as CommentModel;
 
 class PostController extends BaseController
 {
@@ -18,12 +19,14 @@ class PostController extends BaseController
     public function __construct(
         PostModel $postModel,
         UserModel $userModel,
-        TagModel $tagModel
+        TagModel $tagModel,
+        CommentModel $commentModel
     )
     {
         $this->postModel = $postModel;
         $this->userModel = $userModel;
         $this->tagModel = $tagModel;
+        $this->commentModel = $commentModel;
         $this->db = app('db');
     }
 
@@ -101,7 +104,8 @@ class PostController extends BaseController
     public function createPostComment(string $id, Request $request) {
         try {
             $post = $this->postModel->find($id);
-            return $post->comments()->create($request->only(['user_id', 'text']));
+            $comment = $post->comments()->create($request->only(['user_id', 'text']));
+            return $this->commentModel->with('user')->find($comment->id);
         } catch (\Exception $e) {
             $error = $e->getMessage();
             return response()->json(compact('error'), 500);
