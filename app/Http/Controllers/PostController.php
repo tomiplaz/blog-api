@@ -60,11 +60,21 @@ class PostController extends BaseController
      * @return \App\Post|null Requested post (if any) or null.
      */
     public function one(string $stringId) {
-        return $this->postModel
-            ->with(['user', 'comments.user', 'tags'])
-            ->withCount(['comments'])
-            ->where(['string_id' => $stringId])
-            ->first();
+        try {
+            $post = $this->postModel
+                ->where(['string_id' => $stringId])
+                ->first();
+            $post->views_count++;
+            $post->save();
+
+            return $this->postModel
+                ->with(['user', 'comments.user', 'tags'])
+                ->withCount(['comments'])
+                ->find($post->id);
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
     }
 
     /**
@@ -110,24 +120,6 @@ class PostController extends BaseController
             $post = $this->postModel->find($id);
             $comment = $post->comments()->create($request->only(['user_id', 'text']));
             return $this->commentModel->with('user')->find($comment->id);
-        } catch (\Exception $e) {
-            $error = $e->getMessage();
-            return response()->json(compact('error'), 500);
-        }
-    }
-
-    /**
-     * Increment post's views count.
-     *
-     * @param string $id Post's ID.
-     *
-     * @return void|\Illuminate\Http\JsonResponse Empty response (on success) or error response.
-     */
-    public function incrementPostViewsCount(string $id) {
-        try {
-            $post = $this->postModel->find($id);
-            $post->views_count++;
-            $post->save();
         } catch (\Exception $e) {
             $error = $e->getMessage();
             return response()->json(compact('error'), 500);
