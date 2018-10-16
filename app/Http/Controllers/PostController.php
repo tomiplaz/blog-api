@@ -46,7 +46,10 @@ class PostController extends BaseController
             });
         }
 
-        return $query->with(['user', 'comments', 'tags'])->get();
+        return $query
+            ->with(['user', 'tags'])
+            ->withCount(['comments'])
+            ->get();
     }
 
     /**
@@ -59,6 +62,7 @@ class PostController extends BaseController
     public function one(string $stringId) {
         return $this->postModel
             ->with(['user', 'comments.user', 'tags'])
+            ->withCount(['comments'])
             ->where(['string_id' => $stringId])
             ->first();
     }
