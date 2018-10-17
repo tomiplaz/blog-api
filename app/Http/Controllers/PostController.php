@@ -46,6 +46,12 @@ class PostController extends BaseController
             });
         }
 
+        if ($request->has('user')) {
+            $query = $query->whereHas('user', function ($q) use ($request) {
+                $q->where('string_id', $request->query('user'));
+            });
+        }
+
         return $query
             ->with(['user', 'tags'])
             ->withCount(['comments'])
