@@ -49,6 +49,7 @@ class PostController extends BaseController
         return $query
             ->with(['user', 'tags'])
             ->withCount(['comments'])
+            ->orderBy('id', 'DESC')
             ->get();
     }
 
