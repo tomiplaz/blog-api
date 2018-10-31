@@ -31,3 +31,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
         });
     });
 });
+
+$app->get('', function () {
+    return view('index');
+});
