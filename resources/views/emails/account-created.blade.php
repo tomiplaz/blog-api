@@ -6,5 +6,5 @@
 </p>
 <p>
     Please confirm your account by visiting the following link:<br>
-    {{ env('APP_URL') }}/users/confirm-account?token={{ $token }}
+    {{ env('APP_URL') }}/api/v1/users/confirm-account?token={{ $token }}
 </p>

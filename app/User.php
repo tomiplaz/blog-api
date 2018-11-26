@@ -89,11 +89,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Get user's confirmation tokens.
+     * Get user's confirmation token.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function confirmationTokens()
+    public function confirmationToken()
     {
         return $this->hasOne('App\ConfirmationToken', 'user_id');
     }

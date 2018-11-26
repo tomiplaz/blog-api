@@ -33,8 +33,6 @@ class ConfirmationToken extends Model
     private static function getToken() {
         $max = strlen(self::TOKEN_CHARACTERS) - 1;
 
-        app('log')->info('bla' . $max);
-
         do {
             $token = '';
             for ($i = 0; $i < 32; $i++) {
@@ -52,6 +50,6 @@ class ConfirmationToken extends Model
      */
     public function user()
     {
-        return $this->user('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'user_id');
     }
 }
