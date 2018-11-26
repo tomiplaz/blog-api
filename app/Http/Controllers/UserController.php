@@ -53,6 +53,8 @@ class UserController extends BaseController
      * @return \App\User|\Illuminate\Http\JsonResponse Created user or error response.
      */
     public function create(Request $request) {
+        $db = app('db');
+
         try {
             $this->validate($request, [
                 'name' => 'required|string|min:2|max:20',
@@ -60,16 +62,41 @@ class UserController extends BaseController
                 'password' => 'required|string|min:8|max:255'
             ]);
 
-            $user = $this->userModel->create($request->only(['name', 'email', 'password']));
+            $db->beginTransaction();
 
-            Mail::send(new AccountCreated($user));
+            $user = $this->userModel->create($request->only(['name', 'email', 'password']));
+            $confirmationToken = $user->confirmationTokens()->create([]);
+
+            Mail::send(new AccountCreated($user, $confirmationToken->token));
+
+            $db->commit();
 
             return $user;
         } catch(\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
+            $db->rollback();
             $error = $e->getMessage();
             return response()->json(compact('error'), 500);
+        }
+    }
+
+    /**
+     * Confirm an account.
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return
+     */
+    public function confirmAccount(Request $request) {
+        try {
+            $this->validate($request, [
+                'token' => 'required|string|exists:confirmation_tokens,token',
+            ]);
+
+            //$confirmationToken = 
+        } catch (Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
         }
     }
 }

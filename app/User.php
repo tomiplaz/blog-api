@@ -87,4 +87,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\Comment', 'user_id');
     }
+
+    /**
+     * Get user's confirmation tokens.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function confirmationTokens()
+    {
+        return $this->hasOne('App\ConfirmationToken', 'user_id');
+    }
 }

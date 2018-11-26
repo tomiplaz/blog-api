@@ -18,15 +18,16 @@ $app->group(['prefix' => 'api'], function () use ($app) {
         $app->group(['prefix' => 'users'], function () use ($app) {
             $ctrl = 'UserController';
             $app->get('', $ctrl . '@all');
-            $app->get('{stringId}', $ctrl . '@one');
             $app->post('', $ctrl . '@create');
+            $app->get('confirm-account', $ctrl . '@confirmAccount');
+            $app->get('{stringId}', $ctrl . '@one');
         });
 
         $app->group(['prefix' => 'posts'], function () use ($app) {
             $ctrl = 'PostController';
             $app->get('', $ctrl . '@all');
-            $app->get('{stringId}', $ctrl . '@one');
             $app->post('', $ctrl . '@create');
+            $app->get('{stringId}', $ctrl . '@one');
             $app->post('{id}/comments', $ctrl . '@createPostComment');
         });
     });
