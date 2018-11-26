@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\User as UserModel;
+use App\Mail\AccountCreated;
 
 class UserController extends BaseController
 {
@@ -57,7 +59,12 @@ class UserController extends BaseController
                 'email' => 'required|email|max:100|unique:users',
                 'password' => 'required|string|min:8|max:255'
             ]);
-            return $this->userModel->create($request->only(['name', 'email', 'password']));
+
+            $user = $this->userModel->create($request->only(['name', 'email', 'password']));
+
+            Mail::send(new AccountCreated($user));
+
+            return $user;
         } catch(\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
