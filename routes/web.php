@@ -33,6 +33,6 @@ $app->group(['prefix' => 'api'], function () use ($app) {
     });
 });
 
-$app->get('', function () {
+$app->get('{any:.*}', function () {
     return view('index');
 });
