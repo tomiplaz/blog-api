@@ -15,6 +15,8 @@ $factory->define(App\User::class, function(Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
         'email' => $faker->unique()->email,
+        'about' => $faker->text(1000),
+        'website' => $faker->url,
         'password' => 'password',
     ];
 });
