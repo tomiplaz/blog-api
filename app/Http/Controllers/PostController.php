@@ -117,12 +117,12 @@ class PostController extends BaseController
     /**
      * Create a post's comment.
      *
-     * @param string $id Post's ID.
+     * @param int $id Post's ID.
      * @param \Illuminate\Http\Request
      *
      * @return \App\Comment|\Illuminate\Http\JsonResponse Created comment or error response.
      */
-    public function createPostComment(string $id, Request $request) {
+    public function createPostComment(int $id, Request $request) {
         try {
             $post = $this->postModel->find($id);
             $comment = $post->comments()->create($request->only(['user_id', 'text']));

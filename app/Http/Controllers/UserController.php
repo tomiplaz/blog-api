@@ -76,10 +76,34 @@ class UserController extends BaseController
             $this->db->commit();
 
             return $user;
-        } catch(\Illuminate\Validation\ValidationException $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
             $this->db->rollback();
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
+    }
+
+    /**
+     * Update a user.
+     *
+     * @param int $userId User's ID.
+     * @param \Illuminate\Http\Request
+     *
+     * @return \App\User|\Illuminate\Http\JsonResponse Updated user or error response.
+     */
+    public function update(int $userId, Request $request) {
+        try {
+            $this->validate($request, [
+                'about' => 'string|min:2|max:20',
+                'website' => 'string|max:1000',
+            ]);
+
+            return $this->userModel->find($userId)->update($request->only(['about', 'website']));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
+        } catch (\Exception $e) {
             $error = $e->getMessage();
             return response()->json(compact('error'), 500);
         }
