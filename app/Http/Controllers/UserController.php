@@ -88,19 +88,23 @@ class UserController extends BaseController
     /**
      * Update a user.
      *
-     * @param int $userId User's ID.
+     * @param int $id User's ID.
      * @param \Illuminate\Http\Request
      *
      * @return \App\User|\Illuminate\Http\JsonResponse Updated user or error response.
      */
-    public function update(int $userId, Request $request) {
+    public function update(int $id, Request $request) {
         try {
             $this->validate($request, [
-                'about' => 'string|min:2|max:20',
-                'website' => 'string|max:1000',
+                'website' => 'string|min:3|max:255',
+                'about' => 'string|min:2|max:1000',
             ]);
 
-            return $this->userModel->find($userId)->update($request->only(['about', 'website']));
+            $user = $this->userModel->find($id);
+
+            $user->update($request->only(['website', 'about']));
+
+            return $user->fresh();
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
