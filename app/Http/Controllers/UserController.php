@@ -112,9 +112,9 @@ class UserController extends BaseController
     /**
      * Confirm an account.
      * 
-     * @param Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      * 
-     * @return Illuminate\View\View|Illuminate\Http\JsonResponse Index view or error response.
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse Index view or error response.
      */
     public function confirmAccount(Request $request) {
         try {
