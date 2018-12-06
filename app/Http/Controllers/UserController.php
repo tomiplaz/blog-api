@@ -170,7 +170,7 @@ class UserController extends BaseController
                 'password' => $request->get('currentPassword'),
             ];
 
-            if ($token = $this->auth->attempt($credentials)) {
+            if ($token = app('auth')->attempt($credentials)) {
                 $user->update([
                     'password' => $request->get('newPassword'),
                 ]);
