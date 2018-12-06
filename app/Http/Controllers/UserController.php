@@ -115,9 +115,9 @@ class UserController extends BaseController
 
     /**
      * Confirm an account.
-     * 
+     *
      * @param \Illuminate\Http\Request
-     * 
+     *
      * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse Index view or error response.
      */
     public function confirmAccount(Request $request) {
@@ -144,6 +144,43 @@ class UserController extends BaseController
             return response()->json($e, 400);
         } catch (\Exception $e) {
             $this->db->rollback();
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
+    }
+
+    /**
+     * Change user's password.
+     *
+     * @param int $id User's ID.
+     * @param \Illuminate\Http\Request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePassword(int $id, Request $request) {
+        try {
+            $this->validate($request, [
+                'currentPassword' => 'required|string',
+                'newPassword' => 'required|string|min:8|max:255',
+            ]);
+
+            $user = $this->userModel->find($id);
+            $credentials = [
+                'name' => $user->name,
+                'password' => $request->get('currentPassword'),
+            ];
+
+            if ($token = $this->auth->attempt($credentials)) {
+                $user->update([
+                    'password' => $request->get('newPassword'),
+                ]);
+                return response()->json(compact('token'));
+            }
+
+            throw new \Exception('Invalid password! Please try again.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
+        } catch (\Exception $e) {
             $error = $e->getMessage();
             return response()->json(compact('error'), 500);
         }

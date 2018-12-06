@@ -22,6 +22,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
             $app->get('confirm-account', $ctrl . '@confirmAccount');
             $app->get('{stringId}', $ctrl . '@one');
             $app->patch('{id}', $ctrl . '@update');
+            $app->post('{id}/changePassword', $ctrl . '@changePassword');
         });
 
         $app->group(['prefix' => 'posts'], function () use ($app) {

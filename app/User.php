@@ -64,6 +64,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [];
     }
 
+    /**
+     * Mutator for password attribute which hashes a password before setting it.
+     *
+     * @param mixed $value Initial attribute value.
+     *
+     * @return void
+     */
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = password_hash($value, PASSWORD_DEFAULT);
     }
