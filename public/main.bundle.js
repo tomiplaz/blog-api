@@ -714,7 +714,7 @@ var BreadcrumbsComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-breadcrumbs',
             template: __webpack_require__("./src/app/core/header/breadcrumbs/breadcrumbs.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/core/header/breadcrumbs/breadcrumbs.component.css")]
+            styles: [__webpack_require__("./src/app/core/header/breadcrumbs/breadcrumbs.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
     ], BreadcrumbsComponent);
@@ -735,7 +735,7 @@ module.exports = ":host {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 1
 /***/ "./src/app/core/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navigation\">\n  <div class=\"title clickable\" (click)=\"router.navigate(['home'])\">BloggingApp</div>\n  <app-breadcrumbs></app-breadcrumbs>\n</div>\n<div class=\"navigation\" [hidden]=\"isLoginOrCreateAccountUrl\">\n  <ul>\n    <ng-container *ngIf=\"user\">\n      <li>{{ user.name }}</li>\n      <li *ngFor=\"let item of loggedInRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n      <li>\n        <span class=\"label clickable\" (click)=\"onLogoutClick()\">Logout</span>\n      </li>\n    </ng-container>\n    <ng-container *ngIf=\"!user\">\n      <li *ngFor=\"let item of loggedOutRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n    </ng-container>\n  </ul>\n</div>\n<div class=\"toggle\" [ngClass]=\"{ 'disabled': isToggleDisabled }\">\n  <span (click)=\"onToggleClick()\">&#x022EF;&#x022EF;</span>\n</div>\n"
+module.exports = "<div class=\"navigation\">\n  <div class=\"title clickable\" (click)=\"router.navigate(['home'])\">BloggingApp</div>\n  <app-breadcrumbs></app-breadcrumbs>\n</div>\n<div class=\"navigation\" [hidden]=\"isAuthUrl\">\n  <ul>\n    <ng-container *ngIf=\"user\">\n      <li>{{ user.name }}</li>\n      <li *ngFor=\"let item of loggedInRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n      <li>\n        <span class=\"label clickable\" (click)=\"onLogoutClick()\">Logout</span>\n      </li>\n    </ng-container>\n    <ng-container *ngIf=\"!user\">\n      <li *ngFor=\"let item of loggedOutRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n    </ng-container>\n  </ul>\n</div>\n<div class=\"toggle\" [ngClass]=\"{ 'disabled': isToggleDisabled }\">\n  <span (click)=\"onToggleClick()\">&#x022EF;&#x022EF;</span>\n</div>\n"
 
 /***/ }),
 
@@ -784,7 +784,9 @@ var HeaderComponent = /** @class */ (function () {
         this.navigationEndEventsSubscription = this.router.events
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["b" /* filter */])(function (event) { return event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]; }), Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* distinctUntilChanged */])())
             .subscribe(function (event) {
-            _this.isLoginOrCreateAccountUrl = ['/login', '/create-account'].includes(event.url);
+            _this.isAuthUrl = event.url.includes('login') ||
+                event.url.includes('create-account') ||
+                event.url.includes('reset-password');
         });
         this.store.subscribe(function (state) {
             _this.user = state.auth.user;
@@ -951,7 +953,7 @@ var MessageService = /** @class */ (function () {
                     }
                 break;
             case 500:
-                this.toastrService.error(this.MESSAGES.INTERNAL_SERVER_ERROR);
+                this.toastrService.error(response.error.error || this.MESSAGES.INTERNAL_SERVER_ERROR);
                 break;
             default:
                 this.toastrService.error(this.MESSAGES.UNKNOWN_ERROR);
@@ -1073,7 +1075,7 @@ var SetToken = /** @class */ (function () {
 "use strict";
 /* unused harmony export JWT_KEY */
 /* unused harmony export USER_KEY */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return authReducer; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = authReducer;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth_actions__ = __webpack_require__("./src/app/core/store/auth/auth.actions.ts");
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -1092,7 +1094,7 @@ var initialState = {
     user: JSON.parse(localStorage.getItem(USER_KEY)),
     isLoggedIn: Boolean(localStorage.getItem(JWT_KEY)),
 };
-var authReducer = function (state, action) {
+function authReducer(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_0__auth_actions__["a" /* AuthActionName */].LOGIN: {
@@ -1124,7 +1126,8 @@ var authReducer = function (state, action) {
         default:
             return state;
     }
-};
+}
+;
 
 
 /***/ }),
@@ -1220,7 +1223,7 @@ var EnableHeaderToggle = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return sessionReducer; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = sessionReducer;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__session_actions__ = __webpack_require__("./src/app/core/store/session/session.actions.ts");
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -1237,7 +1240,7 @@ var initialState = {
     isFooterOpen: false,
     isHeaderToggleDisabled: true,
 };
-var sessionReducer = function (state, action) {
+function sessionReducer(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_0__session_actions__["c" /* SessionActionName */].TOGGLE_HEADER:
@@ -1251,7 +1254,8 @@ var sessionReducer = function (state, action) {
         default:
             return state;
     }
-};
+}
+;
 
 
 /***/ }),
@@ -1293,7 +1297,7 @@ var ToggleSize = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return settingsReducer; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = settingsReducer;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__settings_values__ = __webpack_require__("./src/app/core/store/settings/settings.values.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__settings_actions__ = __webpack_require__("./src/app/core/store/settings/settings.actions.ts");
 var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -1318,7 +1322,7 @@ var initialState = localStorageSettings ? {
     theme: DEFAULT_THEME,
     size: DEFAULT_SIZE,
 };
-var settingsReducer = function (state, action) {
+function settingsReducer(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_1__settings_actions__["a" /* SettingsActionName */].TOGGLE_THEME: {
@@ -1336,7 +1340,8 @@ var settingsReducer = function (state, action) {
         default:
             return state;
     }
-};
+}
+;
 
 
 /***/ }),
@@ -1437,7 +1442,7 @@ var CreateAccountFormComponent = /** @class */ (function () {
         this.createAccountForm = this.formBuilder.group({
             name: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(2), __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].maxLength(20)]],
             email: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].email, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].maxLength(100)]],
-            password: [null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required],
+            password: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(8)]],
             confirmPassword: [null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required],
         }, {
             validator: this.commonService.getPasswordMatchValidator('password', 'confirmPassword'),
@@ -1456,7 +1461,7 @@ var CreateAccountFormComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-create-account-form',
             template: __webpack_require__("./src/app/create-account/create-account-form/create-account-form.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/create-account/create-account-form/create-account-form.component.css")]
+            styles: [__webpack_require__("./src/app/create-account/create-account-form/create-account-form.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_5__core_common_service__["a" /* CommonService */],
@@ -1546,7 +1551,7 @@ var CreateAccountComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-create-account',
             template: __webpack_require__("./src/app/create-account/create-account.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/create-account/create-account.component.css")]
+            styles: [__webpack_require__("./src/app/create-account/create-account.component.css")]
         }),
         __metadata("design:paramtypes", [])
     ], CreateAccountComponent);
@@ -1874,7 +1879,7 @@ var PostFormComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-post-form',
             template: __webpack_require__("./src/app/create-post/create-post/post-form/post-form.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/create-post/create-post/post-form/post-form.component.css")]
+            styles: [__webpack_require__("./src/app/create-post/create-post/post-form/post-form.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_2__ngrx_store__["a" /* Store */]])
@@ -1964,7 +1969,7 @@ var HomeComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-home',
             template: __webpack_require__("./src/app/home/home.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/home/home.component.css")]
+            styles: [__webpack_require__("./src/app/home/home.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
     ], HomeComponent);
@@ -2091,7 +2096,7 @@ var LoginFormComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-login-form',
             template: __webpack_require__("./src/app/login/login-form/login-form.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/login/login-form/login-form.component.css")]
+            styles: [__webpack_require__("./src/app/login/login-form/login-form.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_3__core_api_auth_service__["a" /* AuthService */],
@@ -2180,7 +2185,7 @@ var LoginComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-login',
             template: __webpack_require__("./src/app/login/login.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/login/login.component.css")]
+            styles: [__webpack_require__("./src/app/login/login.component.css")]
         }),
         __metadata("design:paramtypes", [])
     ], LoginComponent);
@@ -2393,7 +2398,7 @@ var ChangePasswordFormComponent = /** @class */ (function () {
         }).unsubscribe();
         this.changePasswordForm = this.formBuilder.group({
             currentPassword: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
-            newPassword: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            newPassword: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(8)]],
             confirmNewPassword: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
         }, {
             validator: this.commonService.getPasswordMatchValidator('newPassword', 'confirmNewPassword'),
@@ -2514,7 +2519,7 @@ var MyProfileFormComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-my-profile-form',
             template: __webpack_require__("./src/app/my-profile/my-profile/my-profile-form/my-profile-form.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/my-profile/my-profile/my-profile-form/my-profile-form.component.css")]
+            styles: [__webpack_require__("./src/app/my-profile/my-profile/my-profile-form/my-profile-form.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_2__ngrx_store__["a" /* Store */],
@@ -2567,7 +2572,7 @@ var MyProfileComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-my-profile',
             template: __webpack_require__("./src/app/my-profile/my-profile/my-profile.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/my-profile/my-profile/my-profile.component.css")]
+            styles: [__webpack_require__("./src/app/my-profile/my-profile/my-profile.component.css")]
         }),
         __metadata("design:paramtypes", [])
     ], MyProfileComponent);
@@ -2669,7 +2674,7 @@ var CommentFormComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-comment-form',
             template: __webpack_require__("./src/app/posts/comment-form/comment-form.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/posts/comment-form/comment-form.component.css")]
+            styles: [__webpack_require__("./src/app/posts/comment-form/comment-form.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_3__core_api_posts_service__["a" /* PostsService */],
@@ -2735,7 +2740,7 @@ var CommentItemComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-comment-item',
             template: __webpack_require__("./src/app/posts/comment-item/comment-item.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/posts/comment-item/comment-item.component.css")]
+            styles: [__webpack_require__("./src/app/posts/comment-item/comment-item.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
     ], CommentItemComponent);
@@ -2815,7 +2820,7 @@ var PostItemComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-post-item',
             template: __webpack_require__("./src/app/posts/post-item/post-item.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/posts/post-item/post-item.component.css")]
+            styles: [__webpack_require__("./src/app/posts/post-item/post-item.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */]])
@@ -2920,7 +2925,7 @@ var PostComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-post',
             template: __webpack_require__("./src/app/posts/post/post.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/posts/post/post.component.css")]
+            styles: [__webpack_require__("./src/app/posts/post/post.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_2__core_common_service__["a" /* CommonService */],
@@ -3151,7 +3156,7 @@ var PostsComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-posts',
             template: __webpack_require__("./src/app/posts/posts/posts.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/posts/posts/posts.component.css")]
+            styles: [__webpack_require__("./src/app/posts/posts/posts.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */],
@@ -3253,7 +3258,7 @@ var ResetPasswordModule = /** @class */ (function () {
 /***/ "./src/app/reset-password/reset-password/reset-password-form/reset-password-form.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ":host {\n  display: block;\n  width: 50%;\n  text-align: center;\n}\n"
 
 /***/ }),
 
@@ -3301,7 +3306,7 @@ var ResetPasswordFormComponent = /** @class */ (function () {
     }
     ResetPasswordFormComponent.prototype.ngOnInit = function () {
         this.resetPasswordForm = this.formBuilder.group({
-            newPassword: [null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required],
+            newPassword: [null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(8)]],
             confirmNewPassword: [null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required],
         }, {
             validator: this.commonService.getPasswordMatchValidator('newPassword', 'confirmNewPassword'),
@@ -3345,14 +3350,14 @@ var ResetPasswordFormComponent = /** @class */ (function () {
 /***/ "./src/app/reset-password/reset-password/reset-password.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ":host {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n"
 
 /***/ }),
 
 /***/ "./src/app/reset-password/reset-password/reset-password.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-reset-password-form></app-reset-password-form>\n"
+module.exports = "<div class=\"label margin-bottom-s\">Reset Password</div>\n<app-reset-password-form></app-reset-password-form>\n"
 
 /***/ }),
 
@@ -3467,7 +3472,7 @@ var ErrorMessagesComponent = /** @class */ (function () {
 /***/ "./src/app/shared/shared.css":
 /***/ (function(module, exports) {
 
-module.exports = ":root {\n  --margin-s: 20px;\n  --margin-m: 30px;\n  --dark-color: #1a1a1a;\n  --light-color: #e5e5e5;\n  --disabled-dark-color: #bbbbbb;\n  --disabled-light-color: #555555;\n  --width: 640px;\n  --small-font: 16px;\n  --medium-font: 18px;\n  --large-font: 20px;\n  --right-padding: 10%;\n  --transition-duration: 0.5s;\n}\n\n.title {\n  font-size: 1.2em;\n  margin: 0;\n}\n\n.metadata {\n  margin: 5px auto;\n  font-size: 0.8em;\n}\n\n.label {\n  font-weight: bold;\n  text-transform: uppercase;\n}\n\n.header {\n  font-size: 1em;\n}\n\ninput {\n  width: 100%;\n}\n\ntextarea {\n  width: 98%;\n  resize: none;\n}\n\n.margin-bottom-s {\n  margin-bottom: var(--margin-s)\n}\n\n.toggle {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 100%;\n          flex: 1 100%;\n}\n\n.toggle span {\n  cursor: pointer;\n}\n\n.toggle.disabled span {\n  cursor: default;\n}\n\n:host(.light) .toggle.disabled {\n  color: var(--disabled-dark-color);\n}\n\n:host(.dark) .toggle.disabled {\n  color: var(--disabled-light-color);\n}\n"
+module.exports = ":host(.light) .toggle.disabled {\n  color: var(--disabled-dark-color);\n}\n\n:host(.dark) .toggle.disabled {\n  color: var(--disabled-light-color);\n}\n"
 
 /***/ }),
 
@@ -3573,7 +3578,7 @@ var UserItemComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-user-item',
             template: __webpack_require__("./src/app/users/user-item/user-item.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/users/user-item/user-item.component.css")]
+            styles: [__webpack_require__("./src/app/users/user-item/user-item.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
     ], UserItemComponent);
@@ -3721,7 +3726,7 @@ var UserComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-user',
             template: __webpack_require__("./src/app/users/user/user.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/users/user/user.component.css")]
+            styles: [__webpack_require__("./src/app/users/user/user.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_2__core_message_service__["a" /* MessageService */]])
@@ -3955,7 +3960,7 @@ var UsersComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-users',
             template: __webpack_require__("./src/app/users/users/users.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/users/users/users.component.css")]
+            styles: [__webpack_require__("./src/app/users/users/users.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */],
@@ -3980,7 +3985,7 @@ var UsersComponent = /** @class */ (function () {
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: false,
-    apiUrl: 'http://127.0.0.1:8000/api/v1'
+    apiUrl: 'https://blogging-app.tomiplaz.xyz/api/v1'
 };
 
 
