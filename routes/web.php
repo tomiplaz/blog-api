@@ -14,6 +14,7 @@
 $app->group(['prefix' => 'api'], function () use ($app) {
     $app->group(['prefix' => 'v1'], function () use ($app) {
         $app->post('login', 'LoginController@login');
+        $app->post('forgot-password', 'AuthController@forgotPassword');
 
         $app->group(['prefix' => 'users'], function () use ($app) {
             $ctrl = 'UserController';
@@ -22,7 +23,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
             $app->get('confirm-account', $ctrl . '@confirmAccount');
             $app->get('{stringId}', $ctrl . '@one');
             $app->patch('{id}', $ctrl . '@update');
-            $app->post('{id}/changePassword', $ctrl . '@changePassword');
+            $app->post('{id}/change-password', $ctrl . '@changePassword');
         });
 
         $app->group(['prefix' => 'posts'], function () use ($app) {
