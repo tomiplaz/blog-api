@@ -61,7 +61,7 @@ class AuthController extends BaseController
      * 
      * @param \Illuminate\Http\Request
      * 
-     * @return void|\Illuminate\Http\JsonResponse
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function forgotPassword(Request $request) {
         try {
@@ -70,11 +70,13 @@ class AuthController extends BaseController
             ]);
 
             if ($user = $this->userModel->where('email', $request->get('email'))->first()) {
+                $user->forgotPasswordToken()->delete();
+
                 $forgotPasswordToken = $user->forgotPasswordToken()->create([]);
 
                 Mail::send(new ForgotPassword($user, $forgotPasswordToken->token));
 
-                return response()->json(['token' => $forgotPasswordToken->token]);
+                return null;
             }
 
             throw new \Exception('No user with that email!');
@@ -91,7 +93,7 @@ class AuthController extends BaseController
      *
      * @param \Illuminate\Http\Request
      *
-     * @return void|\Illuminate\Http\JsonResponse
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function resetPassword(Request $request) {
         try {
