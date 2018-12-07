@@ -18,6 +18,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
 
             $app->post('login', $ctrl . '@login');
             $app->post('forgot-password', $ctrl . '@forgotPassword');
+            $app->post('reset-password', $ctrl . '@resetPassword');
         });
 
         $app->group(['prefix' => 'users'], function () use ($app) {

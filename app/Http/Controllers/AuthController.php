@@ -24,6 +24,7 @@ class AuthController extends BaseController
         $this->userModel = $userModel;
         $this->forgotPasswordTokenModel = $forgotPasswordTokenModel;
         $this->auth = app('auth');
+        $this->db = app('db');
     }
 
     /**
@@ -68,7 +69,7 @@ class AuthController extends BaseController
                 'email' => 'required|email',
             ]);
 
-            if ($user = $this->userModel->where('email', $request->get('email'))) {
+            if ($user = $this->userModel->where('email', $request->get('email'))->first()) {
                 $forgotPasswordToken = $user->forgotPasswordToken()->create([]);
 
                 Mail::send(new ForgotPassword($user, $forgotPasswordToken->token));
@@ -80,6 +81,43 @@ class AuthController extends BaseController
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
+    }
+
+    /**
+     * Reset user's password if forgot password token is valid.
+     *
+     * @param \Illuminate\Http\Request
+     *
+     * @return void|\Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(Request $request) {
+        try {
+            $this->validate($request, [
+                'token' => 'required|string|exists:forgot_password_tokens,token',
+            ]);
+
+            $this->db->beginTransaction();
+
+            $forgotPasswordToken = $this->forgotPasswordTokenModel
+                ->where('token', $request->get('token'))
+                ->first();
+
+            $forgotPasswordToken->user()->update([
+                'password' => $request->get('newPassword'),
+            ]);
+
+            $forgotPasswordToken->delete();
+
+            $this->db->commit();
+
+            return null;
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
+        } catch (\Exception $e) {
+            $this->db->rollback();
             $error = $e->getMessage();
             return response()->json(compact('error'), 500);
         }
