@@ -104,4 +104,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasOne('App\ConfirmationToken', 'user_id');
     }
+
+    /**
+     * Get user's forgot password token.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function forgotPasswordToken()
+    {
+        return $this->hasOne('App\ForgotPasswordToken', 'user_id');
+    }
 }
