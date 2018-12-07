@@ -6,5 +6,5 @@
 </p>
 <p>
     You can reset your password by visiting the following link:<br>
-    {{ env('APP_URL') }}/reset-password?token={{ $token }}
+    {{ env('APP_URL_' . strtoupper(env('APP_ENV'))) }}/reset-password?token={{ $token }}
 </p>
