@@ -13,11 +13,16 @@
 
 $app->group(['prefix' => 'api'], function () use ($app) {
     $app->group(['prefix' => 'v1'], function () use ($app) {
-        $app->post('login', 'LoginController@login');
-        $app->post('forgot-password', 'AuthController@forgotPassword');
+        $app->group(['prefix' => 'auth'], function () use ($app) {
+            $ctrl = 'AuthController';
+
+            $app->post('login', $ctrl . '@login');
+            $app->post('forgot-password', $ctrl . '@forgotPassword');
+        });
 
         $app->group(['prefix' => 'users'], function () use ($app) {
             $ctrl = 'UserController';
+
             $app->get('', $ctrl . '@all');
             $app->post('', $ctrl . '@create');
             $app->get('confirm-account', $ctrl . '@confirmAccount');
@@ -28,6 +33,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
 
         $app->group(['prefix' => 'posts'], function () use ($app) {
             $ctrl = 'PostController';
+
             $app->get('', $ctrl . '@all');
             $app->post('', $ctrl . '@create');
             $app->get('{stringId}', $ctrl . '@one');

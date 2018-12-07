@@ -27,6 +27,35 @@ class AuthController extends BaseController
     }
 
     /**
+     * Attempt to authenticate user.
+     * 
+     * @param \Illuminate\Http\Request
+     *
+     * @return \Illuminate\Http\JsonResponse JWT and user instance (on success) or error response.
+     */
+    public function login(Request $request) {
+        try {
+            $this->validate($request, [
+                'email' => 'required|email',
+                'password' => 'required|string'
+            ]);
+
+            if ($token = $this->auth->attempt($request->only(['email', 'password']))) {
+                $user = $this->auth->user();
+                return response()->json(compact('token', 'user'));
+            } else {
+                $message = 'Invalid credentials.';
+                return response()->json(compact('message'), 400);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
+    }
+
+    /**
      * Send user an email to change their forgotten password.
      * 
      * @param \Illuminate\Http\Request
@@ -36,10 +65,10 @@ class AuthController extends BaseController
     public function forgotPassword(Request $request) {
         try {
             $this->validate($request, [
-                'name' => 'required|string',
+                'email' => 'required|email',
             ]);
 
-            if ($user = $this->userModel->where('name', $request->get('name'))) {
+            if ($user = $this->userModel->where('email', $request->get('email'))) {
                 $forgotPasswordToken = $user->forgotPasswordToken()->create([]);
 
                 Mail::send(new ForgotPassword($user, $forgotPasswordToken->token));
@@ -47,7 +76,7 @@ class AuthController extends BaseController
                 return response()->json(['token' => $forgotPasswordToken->token]);
             }
 
-            throw new \Exception('Unknown user!');
+            throw new \Exception('No user with that email!');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
