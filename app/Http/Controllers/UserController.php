@@ -34,7 +34,8 @@ class UserController extends BaseController
     public function all() {
         return $this->userModel
             ->withCount(['posts', 'comments'])
-            ->paginate(env('PAGINATE_PER_PAGE', 10));
+            ->paginate(env('PAGINATE_PER_PAGE', 10))
+            ->appends($_GET);
     }
 
     /**
