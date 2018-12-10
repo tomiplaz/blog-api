@@ -4,10 +4,10 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const USERS_COUNT = 5;
-    const TAGS_COUNT = 50;
-    const POSTS_COUNT_RANGE = [1, 2, 3, 4, 5];
-    const COMMENTS_COUNT_RANGE = [1, 2, 3, 4, 5];
+    const USERS_COUNT = 42;
+    const TAGS_COUNT = 142;
+    const POSTS_COUNT_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const COMMENTS_COUNT_RANGE = [0, 1, 2, 3, 4, 5];
     const POST_TAGS_COUNT_RANGE = [0, 1, 2, 3, 4, 5];
 
     /**

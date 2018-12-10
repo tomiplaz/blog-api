@@ -13,10 +13,10 @@
 
 $factory->define(App\User::class, function(Faker\Generator $faker) {
     return [
-        'name' => $faker->unique()->word,
+        'name' => $faker->word + $faker->numberBetween($min = 0, $max = 473289),
         'email' => $faker->unique()->email,
-        'website' => $faker->url(255),
-        'about' => $faker->text(1000),
+        'website' => $faker->url,
+        'about' => $faker->text($maxNbChars = 1000),
         'password' => 'password',
     ];
 });
