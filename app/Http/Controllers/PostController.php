@@ -56,7 +56,7 @@ class PostController extends BaseController
             ->with(['user', 'tags'])
             ->withCount(['comments'])
             ->orderBy('id', 'DESC')
-            ->get();
+            ->paginate(env('PAGINATE_PER_PAGE', 10));
     }
 
     /**
