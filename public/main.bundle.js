@@ -643,7 +643,7 @@ var FooterComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-footer',
             template: __webpack_require__("./src/app/core/footer/footer.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/core/footer/footer.component.css")]
+            styles: [__webpack_require__("./src/app/core/footer/footer.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */]])
     ], FooterComponent);
@@ -735,7 +735,7 @@ module.exports = ":host {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 1
 /***/ "./src/app/core/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navigation\">\n  <div class=\"title clickable\" (click)=\"router.navigate(['home'])\">BloggingApp</div>\n  <app-breadcrumbs></app-breadcrumbs>\n</div>\n<div class=\"navigation\" [hidden]=\"isAuthUrl\">\n  <ul>\n    <ng-container *ngIf=\"user\">\n      <li>{{ user.name }}</li>\n      <li *ngFor=\"let item of loggedInRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n      <li>\n        <span class=\"label clickable\" (click)=\"onLogoutClick()\">Logout</span>\n      </li>\n    </ng-container>\n    <ng-container *ngIf=\"!user\">\n      <li *ngFor=\"let item of loggedOutRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n    </ng-container>\n  </ul>\n</div>\n<div class=\"toggle\" [ngClass]=\"{ 'disabled': isToggleDisabled }\">\n  <span (click)=\"onToggleClick()\">&#x022EF;&#x022EF;</span>\n</div>\n"
+module.exports = "<div class=\"navigation\">\n  <div class=\"title clickable\" (click)=\"router.navigate(['home'])\">BloggingApp</div>\n  <app-breadcrumbs></app-breadcrumbs>\n</div>\n<div class=\"navigation\" [hidden]=\"isAuthUrl\">\n  <ul>\n    <ng-container *ngIf=\"user\">\n      <li>{{ user.name }}</li>\n      <li *ngFor=\"let item of loggedInRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n      <li>\n        <span class=\"label clickable\" (click)=\"onLogoutClick()\">Logout</span>\n      </li>\n    </ng-container>\n    <ng-container *ngIf=\"!user\">\n      <li *ngFor=\"let item of loggedOutRoutingItems\">\n        <span class=\"label clickable\" (click)=\"router.navigate(item.commands)\">{{ item.text }}</span>\n      </li>\n    </ng-container>\n  </ul>\n</div>\n<div class=\"toggle\" [ngClass]=\"{ 'disabled': isToggleDisabled }\" (click)=\"onToggleClick()\">\n  &#x022EF;&#x022EF;\n</div>\n"
 
 /***/ }),
 
@@ -817,7 +817,7 @@ var HeaderComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-header',
             template: __webpack_require__("./src/app/core/header/header.component.html"),
-            styles: [__webpack_require__("./src/app/shared/shared.css"), __webpack_require__("./src/app/core/header/header.component.css")]
+            styles: [__webpack_require__("./src/app/core/header/header.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_4__api_auth_service__["a" /* AuthService */],
@@ -1311,7 +1311,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 
 
 var SETTINGS_KEY = 'bloggging-settings';
-var DEFAULT_THEME = __WEBPACK_IMPORTED_MODULE_0__settings_values__["b" /* Theme */].Light;
+var DEFAULT_THEME = __WEBPACK_IMPORTED_MODULE_0__settings_values__["b" /* Theme */].Dark;
 var DEFAULT_SIZE = __WEBPACK_IMPORTED_MODULE_0__settings_values__["a" /* Size */].Medium;
 ;
 var localStorageSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
@@ -3051,12 +3051,14 @@ var PostsRoutingModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__post_item_post_item_component__ = __webpack_require__("./src/app/posts/post-item/post-item.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__comment_form_comment_form_component__ = __webpack_require__("./src/app/posts/comment-form/comment-form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__comment_item_comment_item_component__ = __webpack_require__("./src/app/posts/comment-item/comment-item.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_shared_module__ = __webpack_require__("./src/app/shared/shared.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -3077,6 +3079,7 @@ var PostsModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_3__posts_routing_module__["a" /* PostsRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_11__shared_shared_module__["a" /* SharedModule */],
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__posts_posts_component__["a" /* PostsComponent */],
@@ -3108,7 +3111,7 @@ module.exports = ""
 /***/ "./src/app/posts/posts/posts.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"label margin-bottom-s\">Posts</div>\n<app-post-item\n  *ngFor=\"let post of posts; trackBy: commonService.trackById\"\n  [post]=\"post\"\n  [isPreview]=\"true\">\n</app-post-item>\n"
+module.exports = "<div class=\"label margin-bottom-s\">Posts</div>\n<app-post-item\n  *ngFor=\"let post of results.data; trackBy: commonService.trackById\"\n  [post]=\"post\"\n  [isPreview]=\"true\">\n</app-post-item>\n<app-paginator\n  [results]=\"results\"\n  (resultsFetched)=\"onResultsFetched($event)\">\n</app-paginator>\n"
 
 /***/ }),
 
@@ -3144,13 +3147,16 @@ var PostsComponent = /** @class */ (function () {
     PostsComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.data.subscribe(function (data) {
-            _this.posts = data.posts;
+            _this.results = data.posts;
         }, function (error) {
             _this.messageService.error(error);
         });
     };
     PostsComponent.prototype.onPostTitleClick = function (stringId) {
         this.router.navigate([stringId], { relativeTo: this.route });
+    };
+    PostsComponent.prototype.onResultsFetched = function (response) {
+        this.results = response;
     };
     PostsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -3469,10 +3475,98 @@ var ErrorMessagesComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/shared/shared.css":
+/***/ "./src/app/shared/paginator/paginator.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ":host(.light) .toggle.disabled {\n  color: var(--disabled-dark-color);\n}\n\n:host(.dark) .toggle.disabled {\n  color: var(--disabled-light-color);\n}\n"
+module.exports = ":host {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n\ndiv {\n  margin: 0 5%;\n}\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/paginator/paginator.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div\n  class=\"label\"\n  [ngClass]=\"{\n    'clickable': results.prev_page_url,\n    'disabled': !results.prev_page_url\n  }\"\n  (click)=\"onPrevClick()\">\n  Prev\n</div>\n<div>{{ results.current_page }} / {{ results.last_page }}</div>\n<div\n  class=\"label\"\n  [ngClass]=\"{\n    'clickable': results.next_page_url,\n    'disabled': !results.next_page_url\n  }\"\n  (click)=\"onNextClick()\">\n  Next\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/paginator/paginator.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaginatorComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_message_service__ = __webpack_require__("./src/app/core/message.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PaginatorComponent = /** @class */ (function () {
+    function PaginatorComponent(httpClient, messageService) {
+        this.httpClient = httpClient;
+        this.messageService = messageService;
+        this.scrollToTopOnFetch = true;
+        this.resultsFetched = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */]();
+    }
+    PaginatorComponent.prototype.ngOnInit = function () {
+        if (!this.results) {
+            throw new Error('PaginationComponent requires results: PaginatedResponse property!');
+        }
+    };
+    PaginatorComponent.prototype.onPrevClick = function () {
+        if (this.results.prev_page_url) {
+            this.fetchResults(this.results.prev_page_url);
+        }
+    };
+    PaginatorComponent.prototype.onNextClick = function () {
+        if (this.results.next_page_url) {
+            this.fetchResults(this.results.next_page_url);
+        }
+    };
+    PaginatorComponent.prototype.fetchResults = function (url) {
+        var _this = this;
+        this.httpClient.get(url).subscribe(function (response) {
+            if (_this.scrollToTopOnFetch) {
+                window.scrollTo(0, 0);
+            }
+            _this.resultsFetched.next(response);
+        }, function (response) {
+            _this.messageService.error(response);
+        });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
+        __metadata("design:type", Object)
+    ], PaginatorComponent.prototype, "results", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
+        __metadata("design:type", Boolean)
+    ], PaginatorComponent.prototype, "scrollToTopOnFetch", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */])
+    ], PaginatorComponent.prototype, "resultsFetched", void 0);
+    PaginatorComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-paginator',
+            template: __webpack_require__("./src/app/shared/paginator/paginator.component.html"),
+            styles: [__webpack_require__("./src/app/shared/paginator/paginator.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */],
+            __WEBPACK_IMPORTED_MODULE_2__core_message_service__["a" /* MessageService */]])
+    ], PaginatorComponent);
+    return PaginatorComponent;
+}());
+
+
 
 /***/ }),
 
@@ -3484,12 +3578,14 @@ module.exports = ":host(.light) .toggle.disabled {\n  color: var(--disabled-dark
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error_messages_error_messages_component__ = __webpack_require__("./src/app/shared/error-messages/error-messages.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paginator_paginator_component__ = __webpack_require__("./src/app/shared/paginator/paginator.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -3503,9 +3599,11 @@ var SharedModule = /** @class */ (function () {
             ],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__error_messages_error_messages_component__["a" /* ErrorMessagesComponent */],
+                __WEBPACK_IMPORTED_MODULE_3__paginator_paginator_component__["a" /* PaginatorComponent */],
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__error_messages_error_messages_component__["a" /* ErrorMessagesComponent */],
+                __WEBPACK_IMPORTED_MODULE_3__paginator_paginator_component__["a" /* PaginatorComponent */],
             ]
         })
     ], SharedModule);
@@ -3859,12 +3957,14 @@ var UsersRoutingModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__users_resolver_service__ = __webpack_require__("./src/app/users/users-resolver.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__user_resolver_service__ = __webpack_require__("./src/app/users/user-resolver.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__user_item_user_item_component__ = __webpack_require__("./src/app/users/user-item/user-item.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_shared_module__ = __webpack_require__("./src/app/shared/shared.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -3882,6 +3982,7 @@ var UsersModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
                 __WEBPACK_IMPORTED_MODULE_2__users_routing_module__["a" /* UsersRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_9__shared_shared_module__["a" /* SharedModule */],
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_3__users_users_component__["a" /* UsersComponent */],
@@ -3912,7 +4013,7 @@ module.exports = ""
 /***/ "./src/app/users/users/users.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"label margin-bottom-s\">Users</div>\n<app-user-item\n  *ngFor=\"let user of users; trackBy: commonService.trackById\"\n  [user]=\"user\"\n  [isNameClickable]=\"true\">\n</app-user-item>\n"
+module.exports = "<div class=\"label margin-bottom-s\">Users</div>\n<app-user-item\n  *ngFor=\"let user of results.data; trackBy: commonService.trackById\"\n  [user]=\"user\"\n  [isNameClickable]=\"true\">\n</app-user-item>\n<app-paginator\n  [results]=\"results\"\n  (resultsFetched)=\"onResultsFetched($event)\">\n</app-paginator>\n"
 
 /***/ }),
 
@@ -3948,13 +4049,16 @@ var UsersComponent = /** @class */ (function () {
     UsersComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.data.subscribe(function (data) {
-            _this.users = data.users;
+            _this.results = data.users;
         }, function (error) {
             _this.messageService.error(error);
         });
     };
     UsersComponent.prototype.onUserNameClick = function (stringId) {
         this.router.navigate([stringId], { relativeTo: this.route });
+    };
+    UsersComponent.prototype.onResultsFetched = function (response) {
+        this.results = response;
     };
     UsersComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
