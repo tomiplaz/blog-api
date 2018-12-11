@@ -18,6 +18,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
         $app->group(['prefix' => 'auth'], function () use ($app) {
             $ctrl = 'AuthController';
 
+            $app->get('confirm-account', $ctrl . '@confirmAccount');
             $app->post('login', $ctrl . '@login');
             $app->post('forgot-password', $ctrl . '@forgotPassword');
             $app->post('reset-password', $ctrl . '@resetPassword');
@@ -28,7 +29,6 @@ $app->group(['prefix' => 'api'], function () use ($app) {
 
             $app->get('', $ctrl . '@all');
             $app->post('', $ctrl . '@create');
-            $app->get('confirm-account', $ctrl . '@confirmAccount');
             $app->get('{stringId}', $ctrl . '@one');
             $app->patch('{id}', $ctrl . '@update');
             $app->post('{id}/change-password', $ctrl . '@changePassword');

@@ -6,6 +6,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\User as UserModel;
+use App\ConfirmationToken as ConfirmationTokenModel;
 use App\ForgotPasswordToken as ForgotPasswordTokenModel;
 use App\Mail\ForgotPassword;
 
@@ -18,13 +19,51 @@ class AuthController extends BaseController
      */
     public function __construct(
         UserModel $userModel,
+        ConfirmationTokenModel $confirmationTokenModel,
         ForgotPasswordTokenModel $forgotPasswordTokenModel
     )
     {
         $this->userModel = $userModel;
+        $this->confirmationTokenModel = $confirmationTokenModel;
         $this->forgotPasswordTokenModel = $forgotPasswordTokenModel;
         $this->auth = app('auth');
         $this->db = app('db');
+    }
+
+    /**
+     * Confirm an account.
+     *
+     * @param \Illuminate\Http\Request
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse Index view or error response.
+     */
+    public function confirmAccount(Request $request) {
+        try {
+            $this->validate($request, [
+                'token' => 'required|string|exists:confirmation_tokens,token',
+            ]);
+
+            $this->db->beginTransaction();
+
+            $confirmationToken = $this->confirmationTokenModel
+                ->where('token', $request->get('token'))
+                ->first();
+
+            $confirmationToken->user->is_confirmed = true;
+            $confirmationToken->user->save();
+
+            $confirmationToken->delete();
+
+            $this->db->commit();
+
+            return redirect('');
+        } catch (Illuminate\Validation\ValidationException $e) {
+            return response()->json($e, 400);
+        } catch (\Exception $e) {
+            $this->db->rollback();
+            $error = $e->getMessage();
+            return response()->json(compact('error'), 500);
+        }
     }
 
     /**
