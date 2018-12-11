@@ -13,6 +13,8 @@
 
 $app->group(['prefix' => 'api'], function () use ($app) {
     $app->group(['prefix' => 'v1'], function () use ($app) {
+        $app->get('home', 'Controller@getHomeData');
+
         $app->group(['prefix' => 'auth'], function () use ($app) {
             $ctrl = 'AuthController';
 
