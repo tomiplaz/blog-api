@@ -12,7 +12,9 @@
         "tymon/jwt-auth": "^1.0@dev",
         "barryvdh/laravel-cors": "^0.11.0",
         "guzzlehttp/guzzle": "^6.3",
-        "illuminate/mail": "5.4.*"
+        "illuminate/mail": "5.4.*",
+        "predis/predis": "~1.0",
+        "illuminate/redis": "5.4.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

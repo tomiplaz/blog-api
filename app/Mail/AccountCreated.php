@@ -3,9 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Mail\Mailable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\User;
 
-class AccountCreated extends Mailable
+class AccountCreated extends Mailable implements ShouldQueue
 {
     const SUBJECT = 'Please confirm your account';
     const VIEW = 'emails.account-created';

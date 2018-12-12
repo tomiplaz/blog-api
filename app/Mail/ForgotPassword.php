@@ -3,9 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Mail\Mailable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\User;
 
-class ForgotPassword extends Mailable
+class ForgotPassword extends Mailable implements ShouldQueue
 {
     const SUBJECT = 'Forgot your password?';
     const VIEW = 'emails.forgot-password';
