@@ -35,7 +35,7 @@ class AuthController extends BaseController
      *
      * @param \Illuminate\Http\Request
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse Index view or error response.
+     * @return null|\Illuminate\Http\JsonResponse Index view or error response.
      */
     public function confirmAccount(Request $request) {
         try {
@@ -56,7 +56,7 @@ class AuthController extends BaseController
 
             $this->db->commit();
 
-            return redirect('');
+            return null;
         } catch (Illuminate\Validation\ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {

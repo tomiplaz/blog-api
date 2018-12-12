@@ -18,7 +18,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
         $app->group(['prefix' => 'auth'], function () use ($app) {
             $ctrl = 'AuthController';
 
-            $app->get('confirm-account', $ctrl . '@confirmAccount');
+            $app->post('confirm-account', $ctrl . '@confirmAccount');
             $app->post('login', $ctrl . '@login');
             $app->post('forgot-password', $ctrl . '@forgotPassword');
             $app->post('reset-password', $ctrl . '@resetPassword');
