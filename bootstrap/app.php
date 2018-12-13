@@ -93,6 +93,8 @@ $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
