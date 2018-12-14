@@ -97,8 +97,8 @@ class UserController extends BaseController
     public function update(int $id, Request $request) {
         try {
             $this->validate($request, [
-                'website' => 'string|min:3|max:255',
-                'about' => 'string|min:2|max:1000',
+                'website' => 'nullable|string|min:3|max:255',
+                'about' => 'nullable|string|min:2|max:1000',
             ]);
 
             $user = $this->userModel->find($id);
