@@ -9,10 +9,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Traits\ManagableByStringId;
+use App\Traits\TimestampsAppendZ;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, ManagableByStringId;
+    use Authenticatable, Authorizable, ManagableByStringId, TimestampsAppendZ;
 
     /**
      * The attributes that are mass assignable.

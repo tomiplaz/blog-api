@@ -29,6 +29,7 @@ $app->withEloquent();
 
 $app->make('queue');
 
+$app->configure('app');
 $app->configure('cors');
 $app->configure('mail');
 $app->configure('services');

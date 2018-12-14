@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ManagableByStringId;
+use App\Traits\TimestampsAppendZ;
 
 class Post extends Model
 {
-    use ManagableByStringId;
+    use ManagableByStringId, TimestampsAppendZ;
 
     /**
      * The attributes that are mass assignable.

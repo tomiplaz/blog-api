@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\CreatedWithUniqueToken;
+use App\Traits\TimestampsAppendZ;
 
 class ConfirmationToken extends Model
 {
-    use CreatedWithUniqueToken;
+    use CreatedWithUniqueToken, TimestampsAppendZ;
 
     /**
      * The attributes that are mass assignable.

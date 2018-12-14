@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\TimestampsAppendZ;
 
 class Tag extends Model
 {
+    use TimestampsAppendZ;
+
     /**
      * The attributes that are mass assignable.
      *
