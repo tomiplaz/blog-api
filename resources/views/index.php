@@ -16,8 +16,8 @@
   <meta name="author" content="Tomislav Plazonic">
   <meta name="description" content="Create your own blog, read and comment on other peoples' blogs.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="stylesheet" href="styles.b5e7533d7bc95593e8a3.css"></head>
+<link rel="stylesheet" href="styles.3236ec6539fa6cb86a9d.css"></head>
 <body>
   <app-root></app-root>
-<script type="text/javascript" src="runtime.ec2944dd8b20ec099bf3.js"></script><script type="text/javascript" src="polyfills.f21ca58529fdfb26673c.js"></script><script type="text/javascript" src="main.e3969cf0a0437e998ef5.js"></script></body>
+<script type="text/javascript" src="runtime.ec2944dd8b20ec099bf3.js"></script><script type="text/javascript" src="polyfills.f21ca58529fdfb26673c.js"></script><script type="text/javascript" src="main.ebbd29e0d39c2355f214.js"></script></body>
 </html>
