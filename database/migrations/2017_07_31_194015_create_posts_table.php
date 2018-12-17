@@ -15,8 +15,8 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('string_id', 6)->unique();
             $table->unsignedInteger('user_id');
+            $table->string('key', 255)->unique();
             $table->string('title', 255);
             $table->text('content');
             $table->unsignedBigInteger('views_count')->default(0);

@@ -29,7 +29,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
 
             $app->get('', $ctrl . '@all');
             $app->post('', $ctrl . '@create');
-            $app->get('{stringId}', $ctrl . '@one');
+            $app->get('{name}', $ctrl . '@one');
             $app->patch('{id}', $ctrl . '@update');
             $app->post('{id}/change-password', $ctrl . '@changePassword');
         });
@@ -39,7 +39,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
 
             $app->get('', $ctrl . '@all');
             $app->post('', $ctrl . '@create');
-            $app->get('{stringId}', $ctrl . '@one');
+            $app->get('{key}', $ctrl . '@one');
             $app->post('{id}/comments', $ctrl . '@createPostComment');
         });
     });

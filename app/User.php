@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Traits\ManagableByStringId;
 use App\Traits\TimestampsAppendZ;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, ManagableByStringId, TimestampsAppendZ;
+    use Authenticatable, Authorizable, TimestampsAppendZ;
 
     /**
      * The attributes that are mass assignable.
@@ -32,18 +31,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password'
     ];
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    public static function boot() {
-        parent::boot();
-        static::creating(function ($user) {
-            $user->string_id = $user->getUniqueStringId();
-        });
-    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

@@ -41,14 +41,14 @@ class UserController extends BaseController
     /**
      * Get a single user.
      *
-     * @param string $stringId User's string Id.
+     * @param string $name User's name.
      *
      * @return \App\User|null Requested user (if any) or null.
      */
-    public function one(string $stringId) {
+    public function one(string $name) {
         return $this->userModel
             ->withCount(['posts', 'comments'])
-            ->where(['string_id' => $stringId])
+            ->where(['name' => $name])
             ->first();
     }
 
@@ -62,7 +62,7 @@ class UserController extends BaseController
     public function create(Request $request) {
         try {
             $this->validate($request, [
-                'name' => 'required|string|min:2|max:20',
+                'name' => 'required|alpha_dash|min:2|max:20',
                 'email' => 'required|email|max:100|unique:users',
                 'password' => 'required|string|min:8|max:255'
             ]);

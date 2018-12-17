@@ -3,12 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\ManagableByStringId;
 use App\Traits\TimestampsAppendZ;
 
 class Post extends Model
 {
-    use ManagableByStringId, TimestampsAppendZ;
+    use TimestampsAppendZ;
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +26,22 @@ class Post extends Model
     public static function boot() {
         parent::boot();
         static::creating(function ($post) {
-            $post->string_id = $post->getUniqueStringId();
+            $post->key = $post->getUniqueKey();
         });
+    }
+
+    /**
+     * Generates a unique key based on post's title.
+     *
+     * @return string Lower case string with non-alphanumeric characters replaced with dash.
+     */
+    private function getUniqueKey()
+    {
+        do {
+            $key = strtolower(preg_replace('/[^a-zA-Z0-9]/', '-', $this->title));
+        } while ($this->where('key', $key)->first());
+
+        return $key;
     }
 
     /**

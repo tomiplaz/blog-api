@@ -48,7 +48,7 @@ class PostController extends BaseController
 
         if ($request->has('user')) {
             $query = $query->whereHas('user', function ($q) use ($request) {
-                $q->where('string_id', $request->query('user'));
+                $q->where('name', $request->query('user'));
             });
         }
 
@@ -63,15 +63,13 @@ class PostController extends BaseController
     /**
      * Get a single post.
      *
-     * @param string $stringId Post's string ID.
+     * @param string $key Post's key.
      *
      * @return \App\Post|null Requested post (if any) or null.
      */
-    public function one(string $stringId) {
+    public function one(string $key) {
         try {
-            $post = $this->postModel
-                ->where(['string_id' => $stringId])
-                ->first();
+            $post = $this->postModel->where(['key' => $key])->first();
             $post->views_count++;
             $post->save();
 
