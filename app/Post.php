@@ -37,11 +37,7 @@ class Post extends Model
      */
     private function getUniqueKey()
     {
-        do {
-            $key = strtolower(preg_replace('/[^a-zA-Z0-9]/', '-', $this->title));
-        } while ($this->where('key', $key)->first());
-
-        return $key;
+        return strtolower(preg_replace('/[^a-zA-Z0-9]/', '-', $this->title)) . time();
     }
 
     /**
