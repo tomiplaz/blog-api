@@ -39,7 +39,7 @@ class Controller extends BaseController
 
         $posts = [
             'recent' => (clone $postsQuery)->orderBy('id', 'DESC')->take(3)->get(),
-            'random' => (clone $postsQuery)->inRandomOrder()->take(3)->get(),
+            'random' => (clone $postsQuery)->inRandomOrder()->take(1)->get(),
         ];
         $stats = [
             'users_count' => $this->userModel->count(),
