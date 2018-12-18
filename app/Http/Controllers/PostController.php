@@ -91,9 +91,17 @@ class PostController extends BaseController
      * @return \App\Post|\Illuminate\Http\JsonResponse Created post or error response.
      */
     public function create(Request $request) {
-        $this->db->beginTransaction();
-
         try {
+            $this->validate($request, [
+                'user_id' => 'required|integer|exists:users,id',
+                'title' => 'required|string|max:245',
+                'content' => 'required|string',
+                'tags' => 'array',
+                'tags.*' => 'string|max:20',
+            ]);
+
+            $this->db->beginTransaction();
+
             $user = $this->userModel->find($request->get('user_id'));
             $post = $user->posts()->create($request->only(['title', 'content']));
 
@@ -123,6 +131,12 @@ class PostController extends BaseController
      */
     public function createPostComment(int $id, Request $request) {
         try {
+            $this->validate($request, [
+                'user_id' => 'required|integer|exists:users,id',
+                'title' => 'required|string|max:245',
+                'content' => 'required|string',
+            ]);
+
             $post = $this->postModel->find($id);
             $comment = $post->comments()->create($request->only(['user_id', 'text']));
             return $this->commentModel->with('user')->find($comment->id);
