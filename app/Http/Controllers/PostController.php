@@ -132,9 +132,8 @@ class PostController extends BaseController
     public function createPostComment(int $id, Request $request) {
         try {
             $this->validate($request, [
-                'user_id' => 'required|integer|exists:users,id',
-                'title' => 'required|string|max:245',
-                'content' => 'required|string',
+                'user_id' => 'nullable|integer|exists:users,id',
+                'text' => 'required|string',
             ]);
 
             $post = $this->postModel->find($id);
