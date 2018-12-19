@@ -38,7 +38,19 @@ class PostController extends BaseController
      * @return \Illuminate\Database\Eloquent\Collection All posts.
      */
     public function all(Request $request) {
+        try {
+            $this->validate($request, [
+                'orderBy' => 'string|in:id,title',
+                'order' => 'string|in:asc,desc',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+
         $query = $this->postModel;
+
+        $orderBy = $request->get('orderBy', 'id');
+        $order = $request->get('order', 'desc');
 
         if ($request->has('tag')) {
             $query = $query->whereHas('tags', function ($q) use ($request) {
@@ -63,7 +75,7 @@ class PostController extends BaseController
         return $query
             ->with(['user', 'tags'])
             ->withCount(['comments'])
-            ->orderBy('id', 'DESC')
+            ->orderBy($orderBy, $order)
             ->paginate(env('PAGINATE_PER_PAGE', 10))
             ->appends($_GET);
     }
