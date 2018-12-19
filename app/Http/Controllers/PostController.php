@@ -52,6 +52,14 @@ class PostController extends BaseController
             });
         }
 
+        if ($request->has('search')) {
+            $search = '%' . $request->get('search') . '%';
+
+            $query = $query
+                ->where('title', 'ilike', $search)
+                ->orWhere('content', 'ilike', $search);
+        }
+
         return $query
             ->with(['user', 'tags'])
             ->withCount(['comments'])
