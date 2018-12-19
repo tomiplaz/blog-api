@@ -29,9 +29,11 @@ class UserController extends BaseController
     /**
      * Get all users.
      *
+     * @param \Illuminate\Http\Request
+     *
      * @return \Illuminate\Database\Eloquent\Collection All users.
      */
-    public function all() {
+    public function all(Request $request) {
         $query = $this->userModel;
 
         if ($request->has('search')) {
