@@ -31,7 +31,7 @@ class PostController extends BaseController
     }
 
     /**
-     * Get all posts (filtered by tag if tag query param is present).
+     * Get all posts.
      *
      * @param \Illuminate\Http\Request
      *

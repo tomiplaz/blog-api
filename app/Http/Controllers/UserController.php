@@ -32,8 +32,16 @@ class UserController extends BaseController
      * @return \Illuminate\Database\Eloquent\Collection All users.
      */
     public function all() {
-        return $this->userModel
+        $query = $this->userModel;
+
+        if ($request->has('search')) {
+            $search = '%' . $request->get('search') . '%';
+            $query = $query->where('name', 'ilike', $search);
+        }
+
+        return $query
             ->withCount(['posts', 'comments'])
+            ->orderBy('id', 'DESC')
             ->paginate(env('PAGINATE_PER_PAGE', 10))
             ->appends($_GET);
     }
