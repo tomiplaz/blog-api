@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use App\Post as PostModel;
 use App\User as UserModel;
 use App\Tag as TagModel;
@@ -40,16 +41,19 @@ class PostController extends BaseController
     public function all(Request $request) {
         try {
             $this->validate($request, [
-                'orderBy' => 'string|in:id,title',
+                'sort' => 'string|in:id,title',
                 'order' => 'string|in:asc,desc',
+                'tag' => 'string',
+                'user' => 'string',
+                'search' => 'string',
             ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json($e->getMessage(), 400);
         }
 
         $query = $this->postModel;
 
-        $orderBy = $request->get('orderBy', 'id');
+        $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
 
         if ($request->has('tag')) {
@@ -75,7 +79,7 @@ class PostController extends BaseController
         return $query
             ->with(['user', 'tags'])
             ->withCount(['comments'])
-            ->orderBy($orderBy, $order)
+            ->orderBy($sort, $order)
             ->paginate(env('PAGINATE_PER_PAGE', 10))
             ->appends($_GET);
     }

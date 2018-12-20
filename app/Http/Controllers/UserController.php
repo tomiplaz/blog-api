@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Mail;
 use App\User as UserModel;
 use App\ConfirmationToken as ConfirmationTokenModel;
@@ -34,7 +35,20 @@ class UserController extends BaseController
      * @return \Illuminate\Database\Eloquent\Collection All users.
      */
     public function all(Request $request) {
+        try {
+            $this->validate($request, [
+                'sort' => 'string|in:id,name',
+                'order' => 'string|in:asc,desc',
+                'search' => 'string',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+
         $query = $this->userModel;
+
+        $sort = $request->get('sort', 'id');
+        $order = $request->get('order', 'desc');
 
         if ($request->has('search')) {
             $search = '%' . $request->get('search') . '%';
@@ -43,7 +57,7 @@ class UserController extends BaseController
 
         return $query
             ->withCount(['posts', 'comments'])
-            ->orderBy('id', 'DESC')
+            ->orderBy($sort, $order)
             ->paginate(env('PAGINATE_PER_PAGE', 10))
             ->appends($_GET);
     }
@@ -87,7 +101,7 @@ class UserController extends BaseController
             $this->db->commit();
 
             return $user;
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
             $this->db->rollback();
@@ -116,7 +130,7 @@ class UserController extends BaseController
             $user->update($request->only(['website', 'about']));
 
             return $user->fresh();
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
             $error = $e->getMessage();
@@ -153,7 +167,7 @@ class UserController extends BaseController
             }
 
             throw new \Exception('Invalid password! Please try again.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json($e, 400);
         } catch (\Exception $e) {
             $error = $e->getMessage();
