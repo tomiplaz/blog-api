@@ -37,7 +37,7 @@ class UserController extends BaseController
     public function all(Request $request) {
         try {
             $this->validate($request, [
-                'sort' => 'string|in:id,name',
+                'sort' => 'string|in:id,name,posts_count,comments_count',
                 'order' => 'string|in:asc,desc',
                 'search' => 'string',
             ]);

@@ -41,7 +41,7 @@ class PostController extends BaseController
     public function all(Request $request) {
         try {
             $this->validate($request, [
-                'sort' => 'string|in:id,title',
+                'sort' => 'string|in:id,title,views_count,comments_count',
                 'order' => 'string|in:asc,desc',
                 'tag' => 'string',
                 'user' => 'string',
