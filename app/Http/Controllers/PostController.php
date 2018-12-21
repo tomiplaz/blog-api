@@ -41,7 +41,7 @@ class PostController extends BaseController
     public function all(Request $request) {
         try {
             $this->validate($request, [
-                'sort' => 'string|in:id,title,views_count,comments_count',
+                'sort' => 'string|in:created_at,title,views_count,comments_count',
                 'order' => 'string|in:asc,desc',
                 'tag' => 'string',
                 'user' => 'string',
@@ -53,7 +53,7 @@ class PostController extends BaseController
 
         $query = $this->postModel;
 
-        $sort = $request->get('sort', 'id');
+        $sort = $request->get('sort', 'created_at');
         $order = $request->get('order', 'desc');
 
         if ($request->has('tag')) {
